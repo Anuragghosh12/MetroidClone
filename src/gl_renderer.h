@@ -121,9 +121,9 @@ void load_gl_functions()
   glDebugMessageCallback_ptr = (PFNGLDEBUGMESSAGECALLBACKPROC)platform_load_gl_function("glDebugMessageCallback");
 }
  
-// #############################################################################
-//                           OpenGL Function Wrappers
-// #############################################################################
+/* 
+OpenGL Function Wrappers
+*/ 
 GLAPI GLuint APIENTRY glCreateProgram (void)
 {
   return glCreateProgram_ptr();

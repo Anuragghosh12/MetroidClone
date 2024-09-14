@@ -6,11 +6,13 @@
 #define NOMINMAX
 #include <windows.h>
 #include "wglext.h"
+#include <glcorearb.h>
 
 /*
 Window Globals
 */
 static HWND window;
+static HDC dc;
 /*
 Platform Implementations
 */
@@ -23,6 +25,15 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
         case WM_CLOSE:
         {
             running=false;
+            break;
+        }
+        case WM_SIZE:
+        {
+            RECT rect = {};
+            GetClientRect(window, &rect);
+            input.screenSizeX = rect.right - rect.left;
+            input.screenSizeY = rect.bottom - rect.top;
+
             break;
         }
         default:
@@ -163,7 +174,7 @@ bool platform_create_window(int width, int height,char* title)
             }
 
 
-            HDC dc = GetDC(window);
+            dc = GetDC(window);
             if(!dc)
             {
                 SM_ASSERT(false, "Failed to get device context");
@@ -258,4 +269,9 @@ void* platform_load_gl_function(char* funName)
         }
     }
     return (void*)proc;
+}
+
+void platform_swap_buffer()
+{
+    SwapBuffers(dc);
 }
